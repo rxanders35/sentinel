@@ -6,8 +6,8 @@ use std::sync::Arc;
 
 #[sentinel_udf]
 async fn my_test_udf(batch: RecordBatch) -> RecordBatch {
-    println!("My test UDF was executed!");
-    batch // Just return the batch as-is.
+    println!("executed");
+    batch
 }
 
 #[tokio::test]
@@ -15,13 +15,13 @@ async fn test_sentinel_udf_macro() {
     let registration = inventory::iter::<UdfRegistration>()
         .find(|reg| {
             let udf = (reg.instantiate_udf)();
-            udf.name() == "my_test_udf"
+            udf.name() == "test_udf"
         })
-        .expect("Failed to find 'my_test_udf' in inventory.");
+        .expect("Failed to find 'test_udf' in inventory.");
 
     let udf = (registration.instantiate_udf)();
 
-    assert_eq!(udf.name(), "my_test_udf");
+    assert_eq!(udf.name(), "test_udf");
 
     let schema = Arc::new(Schema::new(vec![Field::new("a", DataType::Int32, false)]));
     let batch = RecordBatch::new_empty(schema);
