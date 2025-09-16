@@ -1,0 +1,23 @@
+[package]
+name = "sentinel_macro"
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+proc-macro = true
+
+[[test]]
+name = "test_sentinel_udf"
+path = "test/test_sentinel_udf.rs"
+
+[dependencies]
+heck = "0.5.0"
+heck-but-macros = "0.0.1"
+proc-macro2 = "1.0.101"
+quote = "1.0.40"
+syn = "2.0.106"
+sentinel_core = { path = "../sentinel_core" }
+tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
+arrow = { version = "56.1.0", features = ["prettyprint"] }
+inventory = "0.3.21"
+async-trait = "0.1.89"

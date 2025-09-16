@@ -1,6 +1,6 @@
 [workspace]
 resolver = "2"
-members = ["sentinel_cli", "sentinel_core"]
+members = ["sentinel_cli", "sentinel_core", "sentinel_macro"]
 
 [workspace.dependencies]
 clap = { version = "4.5.47", features = ["derive"] }

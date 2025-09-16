@@ -1,6 +1,6 @@
 #[async_trait::async_trait]
 pub trait Udf {
-    /// Returns the name of the user-defined function to be stored in the inventory.
+    /// Returns the name of the user-defined function to be stored in the inventory-backed functionr registry.
     fn name(&self) -> &'static str;
 
     /// Wraps the execution of a user-defined function.
@@ -10,3 +10,10 @@ pub trait Udf {
         record_batch: arrow::record_batch::RecordBatch,
     ) -> Result<arrow::record_batch::RecordBatch, Box<dyn std::error::Error + Send + Sync>>;
 }
+
+pub struct UdfRegistration {
+    /// Instantiates a UDF to be registered to the inventory-backed function registry.
+    pub instantiate_udf: fn() -> Box<dyn Udf>,
+}
+
+inventory::collect!(UdfRegistration);
