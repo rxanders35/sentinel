@@ -1,4 +1,4 @@
-use crate::plan::manifest::{Manifest, Operator, PlanError};
+use crate::dag::manifest::{Manifest, Operator, PlanError};
 use petgraph::graph::NodeIndex;
 use std::collections::HashMap;
 

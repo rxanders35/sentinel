@@ -1,0 +1,27 @@
+[[operators]]
+id = "read_from_file"
+udf_name = "my_source_udf"
+depends = []
+type = "source"
+
+[operators.config]
+type = "path"
+path = "input.csv"
+
+
+[[operators]]
+id = "transform_data"
+udf_name = "my_transform_udf"
+depends = ["read_from_file"]
+type = "transform"
+
+
+[[operators]]
+id = "write_to_file"
+udf_name = "my_sink_udf"
+depends = ["transform_data"]
+type = "sink"
+
+[operators.config]
+type = "path"
+path = "output.csv"
