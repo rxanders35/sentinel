@@ -1,13 +1,16 @@
 use crate::workspace::{WORKSPACE_CARGO_TOML, WORKSPACE_LIB_RS, WORKSPACE_MANIFEST_TOML};
 use clap::{Parser, Subcommand};
-use sentinel_core::dag::manifest::{Manifest, PlanError};
+use sentinel_core::{
+    dag::manifest::{Manifest, PlanError},
+    engine::runtime::Engine,
+};
 
 mod workspace;
 
 const MANIFEST_PATH: &'static str = "./manifest.toml";
 
 #[derive(Parser)]
-#[command(version, about, long_about = None)]
+#[command(name = "sentinel", version, about, long_about = None)]
 struct Cli {
     #[command(subcommand)]
     commands: Option<Commands>,
@@ -20,13 +23,14 @@ enum Commands {
     Apply,
 }
 
-fn main() {
+#[tokio::main]
+async fn main() {
     let cli = Cli::parse();
 
     match cli.commands {
         Some(Commands::Init { workspace_name }) => init(workspace_name).unwrap(),
         Some(Commands::Plan) => plan().unwrap(),
-        Some(Commands::Apply) => apply(),
+        Some(Commands::Apply) => apply().await.unwrap(),
         None => println!("not a command"),
     }
 }
@@ -67,4 +71,10 @@ fn plan() -> Result<(), PlanError> {
     Ok(())
 }
 
-fn apply() {}
+async fn apply() -> anyhow::Result<()> {
+    let plan_str = std::fs::read_to_string("./plan.toml").unwrap();
+    let plan = toml::from_str::<Manifest>(&plan_str).unwrap();
+    let engine = Engine::new();
+    engine.run(&plan).await?;
+    Ok(())
+}

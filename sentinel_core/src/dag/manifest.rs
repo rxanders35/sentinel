@@ -15,34 +15,24 @@ pub struct Operator {
     /// what other operators does this operator depend on?
     #[serde(default)]
     pub depends: Vec<String>,
-
-    // This field now clearly holds the operator's type and its specific config.
-    // The `flatten` attribute here is what allows the `type` and `config` keys
-    // to exist directly within the `[[operators]]` table in the TOML.
     #[serde(flatten)]
     pub kind: OperatorKind,
 }
-
-#[derive(Deserialize, Debug)]
-// This is the key: `serde` will look for a TOML key named "type" and use its
-// value ("source", "sink", or "transform") to decide which variant to pick.
+#[derive(Deserialize, Debug, Clone)]
 #[serde(tag = "type", rename_all = "snake_case")]
 pub enum OperatorKind {
-    // If type = "source", it expects a table named `config` containing a SourceConfig.
     Source { config: SourceConfig },
-    // If type = "sink", it expects a table named `config` containing a SinkConfig.
     Sink { config: SinkConfig },
-    // If type = "transform", it expects no other fields.
     Transform,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Clone)]
 #[serde(tag = "type", rename_all = "snake_case")]
 pub enum SourceConfig {
     Path { path: PathBuf },
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Clone)]
 #[serde(tag = "type", rename_all = "snake_case")]
 pub enum SinkConfig {
     Path { path: PathBuf },

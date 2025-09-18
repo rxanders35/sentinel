@@ -1,5 +1,5 @@
 #[async_trait::async_trait]
-pub trait Udf {
+pub trait Udf: Send + Sync {
     /// Returns the name of the user-defined function to be stored in the inventory-backed functionr registry.
     fn name(&self) -> &'static str;
 

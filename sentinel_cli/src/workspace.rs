@@ -8,7 +8,7 @@ edition = "2024"
 # DO NOT REMOVE THE sentinel-macros crate.
 
 [dependencies]
-sentinel-macros = { path = "../sentinel-macros" }
+sentinel_macros = { path = "../sentinel_macros" }
 "#;
 
 pub const WORKSPACE_MANIFEST_TOML: &'static str = r#"

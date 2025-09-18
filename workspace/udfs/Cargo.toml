@@ -1,0 +1,11 @@
+
+[package]
+name = "udfs"
+version = "0.1.0"
+edition = "2024"
+
+# This is the Cargo.toml associated with your workspace
+# DO NOT REMOVE THE sentinel-macros crate.
+
+[dependencies]
+sentinel_macros = { path = "../sentinel_macros" }

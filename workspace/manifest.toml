@@ -1,0 +1,32 @@
+
+# This is your pipline manifest where you define your pipeline as a DAG
+# THis is just an example. Use the docs to figure out how to build a DAG
+# exactly how you want it.
+
+[[operators]]
+id = "read_input"
+udf_name = "source_udf"
+type = "source"
+
+[operators.config]
+type = "path"
+path = "input.csv"
+
+
+[[operators]]
+id = "transform_data"
+udf_name = "transform_udf"
+depends = ["read_input"]
+type = "transform"
+
+
+[[operators]]
+id = "write_output"
+udf_name = "sink_udf"
+depends = ["transform_data"]
+type = "sink"
+
+[operators.config]
+type = "path"
+path = "output.csv"
+
